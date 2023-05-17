@@ -41,7 +41,7 @@ router.post('/login', async(req, res) => {
     users.forEach(vl => {
         if(username === vl.name && password === vl.password) {
             // Generate a JWT token
-            const token = jwt.sign({ username }, 'secret', { expiresIn: '1h' });
+            const token = jwt.sign({id: vl._id, name: username, email: vl.email, isAdmin: vl.isAdmin }, 'secret', { expiresIn: '1h' });
             res.status(200).json({ token });
             userFound = true;
             console.log('Entred!!');
