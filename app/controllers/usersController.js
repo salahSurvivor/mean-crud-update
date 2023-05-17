@@ -44,12 +44,11 @@ router.post('/login', async(req, res) => {
             const token = jwt.sign({id: vl._id, name: username, email: vl.email, isAdmin: vl.isAdmin }, 'secret', { expiresIn: '1h' });
             res.status(200).json({ token });
             userFound = true;
-            console.log('Entred!!');
         }
     });
 
     if(!userFound){
-        res.status(401).json({ message: 'Invalid credentials' });
+        res.status(500).json({ message: 'Invalid credentials' });
     }
 
 });
