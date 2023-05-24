@@ -5,7 +5,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 router.get('/users', async(req, res) => {
-    try{
+    try{        
         const users = await Users.find({});
         res.status(200).json(users);
     }
@@ -34,6 +34,7 @@ router.post('/register', async(req, res) =>{
 router.post('/login', async(req, res) => {
     const username = req.body.name;
     const password = req.body.password;
+    
     const users = await Users.find({});
     
     for(vl of users){
@@ -53,7 +54,15 @@ router.post('/login', async(req, res) => {
 router.put('/users/:id', async(req, res) => {
     try{
         const {id} = req.params;
-        await Users.findByIdAndUpdate(id, req.body);
+        const data = {
+            id: req.body._id,
+            name: req.body.name,
+            email: req.body.email,
+            password: await bcrypt.hash(req.body.password, 10),
+            isAdmin: req.body.isAdmin
+        }
+
+        await Users.findByIdAndUpdate(id, data);
         res.status(200).json('Update With Success!!');
     }
     catch(err){
