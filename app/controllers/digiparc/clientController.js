@@ -4,9 +4,9 @@ const express = require('express');
 const router = express.Router();
 require('body-parser');
 
-router.get('/client', async(req, res) => {
+router.post('/clientShow', async(req, res) => {
     try{
-        const clients = await clientModel.find({});
+        const clients = await clientModel.find({userName: req.body.userName});
         res.status(200).json(clients);
     }
     catch(err){

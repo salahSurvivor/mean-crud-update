@@ -14,6 +14,16 @@ router.get('/mix', async(req, res) => {
 
 router.post('/mix', async(req, res) => {
     try{
+        const exp = await ExpModel.find({userName: req.body.userName});
+        res.status(200).json(exp);
+    }
+    catch(err){
+        res.status(500).json(err.message);
+    }
+});
+
+router.post('/mixAdd', async(req, res) => {
+    try{
         await ExpModel.create(req.body);
         res.status(200).json('Created With Success!!');
     }
@@ -45,9 +55,9 @@ router.put("/mix/:id", async(req, res) =>{
 })
 
 /**********Find the last id inserted**********/
-router.get('/last', async(req, res) => {
+router.post('/last', async(req, res) => {
     try{
-        const trajet = await ExpModel.findOne().sort({_id: -1});
+        const trajet = await ExpModel.findOne({userName: req.body.userName}).sort({_id: -1});
         const nbSplit = trajet ? trajet.numero.split('/')[0] : 0;
         res.status(200).json(nbSplit);
     }

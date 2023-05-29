@@ -22,11 +22,17 @@ router.post('/register', async(req, res) =>{
             password: await bcrypt.hash(req.body.password, 10),
             isAdmin: req.body.isAdmin
         }
-        const user = await Users.create(data);
-        res.status(200).json(user);
+        
+        const isThere = await Users.findOne({name: req.body.name});
+
+        if(isThere)
+            return res.status(500).json('Username already exist!!');
+
+        const user = await Users.create(data);    
+        return res.status(200).json(user);
     }
     catch(err){
-        res.status(500).json(err.message);
+        res.status(500).json('please fill all inputs');
     }
 });
 
@@ -80,5 +86,7 @@ router.delete('/users/:id', async(req, res) => {
         res.status(500).json(err.message);
     }
 })
+
+
 
 module.exports = router;

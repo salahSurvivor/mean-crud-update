@@ -12,6 +12,7 @@ const mixSchema = mongoose.Schema({
     cmtr: {type: String},
     expediteur: {type: Array},
     menu: Boolean,
+    userName: String
 });
 
 const mix = mongoose.model('mix', mixSchema);
